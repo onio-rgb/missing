@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "537087069904",
+    "project_id": "missing-ef920",
+    "storage_bucket": "missing-ef920.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537087069904:android:59d6706cf07e91602b58d5",
+        "android_client_info": {
+          "package_name": "com.example.missing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537087069904-edpsqug0sv71fgp648npt43f4jgqerqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6s3FKTbGYyKvsbdA83zUz0TM2sTXa_TE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537087069904-edpsqug0sv71fgp648npt43f4jgqerqs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "537087069904-d3q12inu8u9rh0sdpaq0nva8qabiaoed.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.missing"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
