@@ -1,12 +1,30 @@
 import 'dart:ffi';
 
+import 'package:async_button_builder/async_button_builder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:missing/providers/startup.dart';
 import 'package:missing/signup.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final user = TextEditingController();
+
+  final pass = TextEditingController();
+  String error = "";
+
+  void feedback(String s) {
+    setState(() {
+      error = s;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +103,7 @@ class LoginPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        controller: user,
                         style: TextStyle(fontSize: 20),
                         //cursorColor: Colors.black,
                         decoration: InputDecoration(
@@ -122,6 +141,7 @@ class LoginPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        controller: pass,
                         style: TextStyle(fontSize: 20),
                         //cursorColor: Colors.black,
                         decoration: InputDecoration(
@@ -149,18 +169,47 @@ class LoginPage extends StatelessWidget {
                 )
               ]),
           SizedBox(
-            height: 50,
+            height: 30,
+          ),
+          Center(
+            child: Container(
+              child: Text(
+                error,
+                style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center,
+              ),
+              width: 300,
+              height: 30,
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Container(
             width: 50,
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: ElevatedButton(
-                onPressed: () {},
+              child: AsyncButtonBuilder(
+                onPressed: () async {
+                  try {
+                    final credential = await FirebaseAuth.instance
+                        .signInWithEmailAndPassword(
+                            email: user.text, password: pass.text);
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'user-not-found') {
+                      feedback('user not found');
+                    } else if (e.code == 'wrong-password') {
+                      feedback('wrong password');
+                    }
+                  }
+                },
                 child: Text(
-                  'Log In',
+                  'Sign Up',
                   style: TextStyle(fontSize: 17),
                 ),
+                builder: (context, child, callback, _) {
+                  return ElevatedButton(onPressed: callback, child: child);
+                },
               ),
             ),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),

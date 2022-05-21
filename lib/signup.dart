@@ -210,6 +210,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Text(
                 error,
                 style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center,
               ),
               width: 300,
               height: 30,
