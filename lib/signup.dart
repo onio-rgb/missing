@@ -2,13 +2,25 @@ import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:future_button/future_button.dart';
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
   final user = TextEditingController();
+
   final pass = TextEditingController();
+  String error = "";
   final cpass = TextEditingController();
+  void feedback(String s) {
+    setState(() {
+      error = s;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,14 +203,27 @@ class SignUpPage extends StatelessWidget {
                 )
               ]),
           SizedBox(
-            height: 50,
+            height: 30,
+          ),
+          Center(
+            child: Container(
+              child: Text(
+                error,
+                style: TextStyle(color: Colors.red),
+              ),
+              width: 300,
+              height: 30,
+            ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: FutureRaisedButton(
+                child: AsyncButtonBuilder(
                   onPressed: () async {
                     try {
                       final credential = await FirebaseAuth.instance
@@ -208,9 +233,9 @@ class SignUpPage extends StatelessWidget {
                       );
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
-                        print('The password provided is too weak.');
+                        feedback('The password provided is too weak.');
                       } else if (e.code == 'email-already-in-use') {
-                        print('The account already exists for that email.');
+                        feedback('The account already exists for that email.');
                       }
                     } catch (e) {
                       print(e);
@@ -220,6 +245,9 @@ class SignUpPage extends StatelessWidget {
                     'Sign Up',
                     style: TextStyle(fontSize: 17),
                   ),
+                  builder: (context, child, callback, _) {
+                    return ElevatedButton(onPressed: callback, child: child);
+                  },
                 ),
               ),
               decoration:

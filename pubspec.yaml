@@ -38,9 +38,9 @@ dependencies:
   flex_color_scheme: ^5.0.1
   provider: ^6.0.2
   firebase_core: ^1.17.0
-  future_button: ^0.1.2
   firebase_auth: ^3.3.18
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
+  async_button_builder: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:
