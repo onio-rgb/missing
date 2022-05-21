@@ -1,9 +1,14 @@
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:future_button/future_button.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  final user = TextEditingController();
+  final pass = TextEditingController();
+  final cpass = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +86,7 @@ class SignUpPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        controller: user,
                         style: TextStyle(fontSize: 20),
                         //cursorColor: Colors.black,
                         decoration: InputDecoration(
@@ -118,6 +124,7 @@ class SignUpPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        controller: pass,
                         style: TextStyle(fontSize: 20),
                         //cursorColor: Colors.black,
                         decoration: InputDecoration(
@@ -156,6 +163,7 @@ class SignUpPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
+                        controller: cpass,
                         style: TextStyle(fontSize: 20),
                         //cursorColor: Colors.black,
                         decoration: InputDecoration(
@@ -190,8 +198,24 @@ class SignUpPage extends StatelessWidget {
             child: Container(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: ElevatedButton(
-                  onPressed: () {},
+                child: FutureRaisedButton(
+                  onPressed: () async {
+                    try {
+                      final credential = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                        email: user.text,
+                        password: pass.text,
+                      );
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        print('The password provided is too weak.');
+                      } else if (e.code == 'email-already-in-use') {
+                        print('The account already exists for that email.');
+                      }
+                    } catch (e) {
+                      print(e);
+                    }
+                  },
                   child: Text(
                     'Sign Up',
                     style: TextStyle(fontSize: 17),
