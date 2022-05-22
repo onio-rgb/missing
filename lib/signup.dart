@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:async_button_builder/async_button_builder.dart';
@@ -21,6 +22,8 @@ class _SignUpPageState extends State<SignUpPage> {
       error = s;
     });
   }
+
+  final db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -232,6 +235,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         email: user.text,
                         password: pass.text,
                       );
+                      Map<String, dynamic> m = {
+                        'email': user.text,
+                        'pass': pass.text
+                      };
+                      db
+                          .collection('users')
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .set(m);
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         feedback('The password provided is too weak.');
