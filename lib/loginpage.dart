@@ -3,7 +3,9 @@ import 'dart:ffi';
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:missing/globals.dart';
 import 'package:missing/providers/startup.dart';
+import 'package:missing/screens/missing_people_list.dart';
 import 'package:missing/signup.dart';
 import 'package:provider/provider.dart';
 
@@ -195,6 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                     final credential = await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
                             email: user.text, password: pass.text);
+                    
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       feedback('user not found');
@@ -202,9 +205,15 @@ class _LoginPageState extends State<LoginPage> {
                       feedback('wrong password');
                     }
                   }
+                  currentUid = FirebaseAuth.instance.currentUser!.uid;
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MissingList()),
+                      (Route<dynamic> route) => false,
+                    );
                 },
                 child: Text(
-                  'Sign Up',
+                  'Login',
                   style: TextStyle(fontSize: 17),
                 ),
                 builder: (context, child, callback, _) {

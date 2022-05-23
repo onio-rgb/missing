@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:async_button_builder/async_button_builder.dart';
+import 'package:missing/globals.dart';
+import 'package:missing/screens/missing_people_list.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -230,6 +232,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: AsyncButtonBuilder(
                   onPressed: () async {
                     try {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => MissingList()),
+                        (Route<dynamic> route) => false,
+                      );
                       final credential = await FirebaseAuth.instance
                           .createUserWithEmailAndPassword(
                         email: user.text,
@@ -243,6 +250,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           .collection('users')
                           .doc(FirebaseAuth.instance.currentUser!.uid)
                           .set(m);
+                      currentUid = FirebaseAuth.instance.currentUser!.uid;
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'weak-password') {
                         feedback('The password provided is too weak.');
