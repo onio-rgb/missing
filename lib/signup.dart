@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:async_button_builder/async_button_builder.dart';
+import 'package:missing/custom%20widgets/textfield.dart';
 import 'package:missing/globals.dart';
 import 'package:missing/screens/missing_people_list.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -30,7 +31,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       // backgroundColor: Colors.grey[200],
       body: ListView(
         children: [
@@ -93,118 +93,32 @@ class _SignUpPageState extends State<SignUpPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Card(
-                    //shadowColor: Colors.grey,
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: user,
-                        style: TextStyle(fontSize: 20),
-                        //cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.login,
-                            ),
-                            labelText: 'Username',
-                            labelStyle: TextStyle(fontSize: 15),
-                            floatingLabelStyle: TextStyle(fontSize: 15),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            //focusColor: Colors.white,
-                            //hoverColor: Colors.white,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
-                                    width: 0, style: BorderStyle.none)),
-                            filled: true,
-                            //fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0)),
-                      ),
-                    ),
-                  ),
+                CustomTextField(
+                  label: "Email",
+                  input: user,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.email,
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Card(
-                    //shadowColor: Colors.grey,
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: pass,
-                        style: TextStyle(fontSize: 20),
-                        //cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.password,
-                              //color: Colors.black,
-                            ),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(fontSize: 15),
-                            floatingLabelStyle: TextStyle(fontSize: 15),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            //focusColor: Colors.white,
-                            //hoverColor: Colors.white,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
-                                    width: 0, style: BorderStyle.none)),
-                            filled: true,
-                            //fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0)),
-                      ),
-                    ),
-                  ),
+                CustomTextField(
+                  label: "Password",
+                  input: pass,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.password,
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Card(
-                    //shadowColor: Colors.grey,
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: cpass,
-                        style: TextStyle(fontSize: 20),
-                        //cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.password,
-                              //color: Colors.black,
-                            ),
-                            labelText: 'Confirm Password',
-                            labelStyle: TextStyle(fontSize: 15),
-                            floatingLabelStyle: TextStyle(fontSize: 15),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            //focusColor: Colors.white,
-                            //hoverColor: Colors.white,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
-                                    width: 0, style: BorderStyle.none)),
-                            filled: true,
-                            //fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0)),
-                      ),
-                    ),
-                  ),
+                CustomTextField(
+                  label: "Confirm Password",
+                  input: cpass,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.password,
                 )
               ]),
           SizedBox(

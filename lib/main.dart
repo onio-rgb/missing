@@ -18,8 +18,8 @@ void main() async {
       ),
     ],
     child: MaterialApp(
-      theme: FlexThemeData.light(
-        scheme: FlexScheme.greyLaw,
+      theme: FlexThemeData.dark(
+        scheme: FlexScheme.vesuviusBurn,
         useMaterial3: true,
       ),
       // The Mandy red, dark theme.

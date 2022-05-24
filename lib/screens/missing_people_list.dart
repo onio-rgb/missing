@@ -1,6 +1,8 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:missing/providers/missing_people.dart';
+import 'package:missing/screens/report_missing.dart';
 import 'package:provider/provider.dart';
 
 class MissingList extends StatefulWidget {
@@ -20,17 +22,24 @@ class _MissingListState extends State<MissingList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+            isExtended: true,
+            child: Icon(Icons.add,),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => ReportMissing())));
+            }),
         appBar: AppBar(
           actions: [
             DropdownButton<String>(
+              borderRadius: BorderRadius.circular(10),
+              dropdownColor: FlexColor.greyLawLightPrimary,
               value: dropdownValue,
-              icon: const Icon(Icons.arrow_downward),
+              icon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(Icons.filter_list)),
               elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
+              style: const TextStyle(color: Colors.white),
               onChanged: (String? newValue) {
                 setState(() {
                   dropdownValue = newValue!;
@@ -61,7 +70,10 @@ class _MissingListState extends State<MissingList> {
                         "${missing_people[i]['name']}  ${missing_people[i]['age']}");
                   });
             } else
-              return CircularProgressIndicator();
+              return Center(
+                  child: CircularProgressIndicator(
+                color: Colors.black,
+              ));
           },
         ));
   }
