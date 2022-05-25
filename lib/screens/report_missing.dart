@@ -41,7 +41,7 @@ class _ReportMissingState extends State<ReportMissing> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        print("${_image!.path} Astitba");
+        //print("${_image!.path} Astitba");
       } else {
         _image = null;
         print('No image selected.');

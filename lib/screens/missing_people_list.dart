@@ -2,6 +2,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:missing/providers/missing_people.dart';
+import 'package:missing/screens/find_missing.dart';
 import 'package:missing/screens/report_missing.dart';
 import 'package:provider/provider.dart';
 
@@ -24,13 +25,24 @@ class _MissingListState extends State<MissingList> {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
             isExtended: true,
-            child: Icon(Icons.add,),
+            child: Icon(
+              Icons.search,
+            ),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => ReportMissing())));
+                  MaterialPageRoute(builder: ((context) => FindMissing())));
             }),
         appBar: AppBar(
           actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReportMissing()));
+              },
+              child: Icon(
+                Icons.add,
+              ),
+            ),
             DropdownButton<String>(
               borderRadius: BorderRadius.circular(10),
               dropdownColor: FlexColor.greyLawLightPrimary,
