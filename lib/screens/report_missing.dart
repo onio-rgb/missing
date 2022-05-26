@@ -5,9 +5,15 @@ import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:missing/custom%20widgets/textfield.dart';
 import 'package:missing/globals.dart';
+import 'package:missing/providers/missing_people.dart';
+import 'package:missing/screens/missing_people_list.dart';
+import 'package:missing/services/facerecognition.dart';
+import 'package:missing/services/get_image.dart';
+import 'package:missing/services/mobilenet.dart';
 
 class ReportMissing extends StatefulWidget {
   const ReportMissing({Key? key}) : super(key: key);
@@ -17,37 +23,41 @@ class ReportMissing extends StatefulWidget {
 }
 
 class _ReportMissingState extends State<ReportMissing> {
+  bool _multiplefaces = false;
+  List _mobilenet_res = [];
+  List<Face> _faces = [];
+  bool _noface = false;
   File? _image;
   //function to pick photo from either gallery or camera
 
-  Future getImage(bool gallery) async {
-    ImagePicker picker = ImagePicker();
-    PickedFile pickedFile;
-    // Let user select photo from gallery
-    if (gallery) {
-      // ignore: deprecated_member_use
-      pickedFile = (await picker.getImage(
-        source: ImageSource.gallery,
-      ))!;
-    }
-    // Otherwise open camera to get new photo
-    else {
-      // ignore: deprecated_member_use
-      pickedFile = (await picker.getImage(
-        source: ImageSource.camera,
-      ))!;
-    }
+  // Future getImage(bool gallery) async {
+  //   ImagePicker picker = ImagePicker();
+  //   PickedFile pickedFile;
+  //   // Let user select photo from gallery
+  //   if (gallery) {
+  //     // ignore: deprecated_member_use
+  //     pickedFile = (await picker.getImage(
+  //       source: ImageSource.gallery,
+  //     ))!;
+  //   }
+  //   // Otherwise open camera to get new photo
+  //   else {
+  //     // ignore: deprecated_member_use
+  //     pickedFile = (await picker.getImage(
+  //       source: ImageSource.camera,
+  //     ))!;
+  //   }
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        //print("${_image!.path} Astitba");
-      } else {
-        _image = null;
-        print('No image selected.');
-      }
-    });
-  }
+  //   setState(() {
+  //     if (pickedFile != null) {
+  //       _image = File(pickedFile.path);
+  //       //print("${_image!.path} Astitba");
+  //     } else {
+  //       _image = null;
+  //       print('No image selected.');
+  //     }
+  //   });
+  // }
 
   Future<String> uploadFile(File image) async {
     try {
@@ -74,6 +84,14 @@ class _ReportMissingState extends State<ReportMissing> {
     ref.update({"image": imageURL});
   }
 
+  Future<void> uploadTensor(DocumentReference ref) async {
+    await ref.update({"tensor": _mobilenet_res});
+  }
+
+  MobileNet mobileNet = MobileNet();
+  FaceRecognition faceRecognition = FaceRecognition();
+  GetImage getImage = GetImage();
+  MissingPeople missingPeople = MissingPeople();
   final db = FirebaseFirestore.instance;
   late TextEditingController name = TextEditingController();
   late TextEditingController age = TextEditingController();
@@ -86,8 +104,33 @@ class _ReportMissingState extends State<ReportMissing> {
       floatingActionButton:
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         FloatingActionButton(
-          onPressed: () {
-            getImage(true);
+          onPressed: () async {
+            _mobilenet_res.clear();
+            setState(() {
+              _noface = false;
+              _multiplefaces = false;
+            });
+            _image = await getImage.getImage(true);
+            if (_image != null) {
+              _faces = await faceRecognition.detectFaces(_image!);
+              if (_faces.length == 0) {
+                setState(() {
+                  _noface = true;
+                });
+              } else if (_faces.length > 1) {
+                setState(() {
+                  _multiplefaces = true;
+                });
+              } else {
+                setState(() {});
+              }
+
+              for (var face in _faces) {
+                _mobilenet_res = (await mobileNet.predict(_image!, face));
+              }
+              print(_mobilenet_res);
+              setState(() {});
+            }
           },
           child: Icon(Icons.photo),
         ),
@@ -95,8 +138,32 @@ class _ReportMissingState extends State<ReportMissing> {
           width: 20,
         ),
         FloatingActionButton(
-          onPressed: () {
-            getImage(false);
+          onPressed: () async {
+            _mobilenet_res.clear();
+            setState(() {
+              _noface = false;
+              _multiplefaces = false;
+            });
+            _image = await getImage.getImage(false);
+            if (_image != null) {
+              _faces = await faceRecognition.detectFaces(_image!);
+              if (_faces.length == 0) {
+                setState(() {
+                  _noface = true;
+                });
+              }
+              if (_faces.length > 1) {
+                setState(() {
+                  _multiplefaces = true;
+                });
+              }
+
+              for (var face in _faces) {
+                _mobilenet_res = (await mobileNet.predict(_image!, face));
+              }
+              print(_mobilenet_res);
+              setState(() {});
+            }
           },
           child: Icon(Icons.camera),
         )
@@ -148,6 +215,18 @@ class _ReportMissingState extends State<ReportMissing> {
               ),
             ],
           ),
+          (_noface == true)
+              ? Text(
+                  "No Face Detected! Try again",
+                  textAlign: TextAlign.center,
+                )
+              : Container(),
+          (_multiplefaces == true)
+              ? Text(
+                  "More than once face detected",
+                  textAlign: TextAlign.center,
+                )
+              : Container(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
             child: Container(
@@ -169,19 +248,18 @@ class _ReportMissingState extends State<ReportMissing> {
                 child: AsyncButtonBuilder(
                   onPressed: () async {
                     final details = {
+                      'user': currentUid,
                       'name': name.text,
                       'age': age.text,
                       'lastwear': lastwear.text,
                       'feet': int.parse(feet.text),
                       'inches': int.parse(inches.text)
                     };
-                    DocumentReference doc_ref = await db
-                        .collection('users')
-                        .doc(currentUid)
-                        .collection('missing people')
-                        .add(details);
+                    DocumentReference doc_ref =
+                        await db.collection('missing people').add(details);
                     // print("bery");
                     await saveImages(doc_ref);
+                    await uploadTensor(doc_ref);
                   },
                   child: Text(
                     'Submit',
