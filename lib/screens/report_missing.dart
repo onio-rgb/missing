@@ -104,6 +104,7 @@ class _ReportMissingState extends State<ReportMissing> {
       floatingActionButton:
           Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         FloatingActionButton(
+          heroTag: "h1",
           onPressed: () async {
             _mobilenet_res.clear();
             setState(() {
@@ -138,6 +139,7 @@ class _ReportMissingState extends State<ReportMissing> {
           width: 20,
         ),
         FloatingActionButton(
+          heroTag: "h2",
           onPressed: () async {
             _mobilenet_res.clear();
             setState(() {
@@ -260,6 +262,7 @@ class _ReportMissingState extends State<ReportMissing> {
                     // print("bery");
                     await saveImages(doc_ref);
                     await uploadTensor(doc_ref);
+                    Navigator.pop(context);
                   },
                   child: Text(
                     'Submit',

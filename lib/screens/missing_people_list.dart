@@ -36,8 +36,12 @@ class _MissingListState extends State<MissingList> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ReportMissing()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ReportMissing())).then((value) {
+                  setState(() {});
+                });
               },
               child: Icon(
                 Icons.add,

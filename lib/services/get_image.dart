@@ -12,20 +12,20 @@ class GetImage {
 
   Future<File?> getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
-    XFile pickedFile;
+    XFile? pickedFile;
     // Let user select photo from gallery
     if (gallery) {
       // ignore: deprecated_member_use
       pickedFile = (await picker.pickImage(
         source: ImageSource.gallery,
-      ))!;
+      ));
     }
     // Otherwise open camera to get new photo
     else {
       // ignore: deprecated_member_use
       pickedFile = (await picker.pickImage(
         source: ImageSource.camera,
-      ))!;
+      ));
     }
 
     if (pickedFile != null) {

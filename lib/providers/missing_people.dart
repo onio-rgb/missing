@@ -5,15 +5,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MissingPeople with ChangeNotifier {
   FirebaseFirestore db = FirebaseFirestore.instance;
+  List<Map<String, dynamic>> _tensorDb = [];
   List<Map<String, dynamic>> _missing = [];
   List<Map<String, dynamic>> get missing => _missing;
+  List<Map<String, dynamic>> get tensorDb => _tensorDb;
 
   Future<void> getPerUser() async {
-    missing.clear();
+    _missing.clear();
+    Future.delayed(Duration(milliseconds: 100));
     final missing_peope = await db
-        .collection('users')
-        .doc(currentUid)
         .collection('missing people')
+        .where('user', isEqualTo: currentUid)
         .get();
 
     final x = missing_peope.docs;
@@ -26,22 +28,27 @@ class MissingPeople with ChangeNotifier {
   }
 
   Future<void> getAll() async {
-    missing.clear();
-    final users_ref = await db.collection('users').get();
-    final users = users_ref.docs;
-    for (var user in users) {
-      final user_id = user.id;
-      //print("${user_id}Astitva");
-      final missing_people = await db
-          .collection('users')
-          .doc(user_id)
-          .collection('missing people')
-          .get();
-      for (var person in missing_people.docs) {
-        //print("${person.data()}ASTITVA");
-        _missing.add(person.data());
-      }
+    _missing.clear();
+    Future.delayed(Duration(milliseconds: 100));
+    final missing_people_ref = await db.collection('missing people').get();
+    final missing_people = missing_people_ref.docs;
+    for (var missing_peep in missing_people) {
+      _missing.add(missing_peep.data());
     }
     notifyListeners();
+  }
+
+  Future<void> getTensorAll() async {
+    _tensorDb.clear();
+    Future.delayed(Duration(milliseconds: 100));
+    final missing_people_ref = await db.collection('missing people').get();
+    final missing_people = missing_people_ref.docs;
+    for (var missing_peep in missing_people) {
+      _tensorDb.add(missing_peep.data());
+    }
+  }
+
+  Future<void> refreshLocalDb() async {
+    await getTensorAll();
   }
 }
