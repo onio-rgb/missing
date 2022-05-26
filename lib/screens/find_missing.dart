@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
+import 'package:missing/services/image_processing.dart';
 
 class FindMissing extends StatefulWidget {
   const FindMissing({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class FindMissing extends StatefulWidget {
 }
 
 class _FindMissingState extends State<FindMissing> {
+  ImageProcess imageProcess = ImageProcess();
   bool _imagepicked = false;
   FaceDetectorOptions options =
       FaceDetectorOptions(enableLandmarks: false, enableClassification: true);
@@ -60,8 +62,9 @@ class _FindMissingState extends State<FindMissing> {
     } on Exception catch (e) {
       print("${e} Astitva1");
     }
+    print("${faces.length} Astitva");
     for (Face face in faces) {
-      print("${face.smilingProbability} Astitva");
+      print(imageProcess.process(_image, face));
     }
   }
 
