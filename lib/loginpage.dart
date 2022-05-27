@@ -139,10 +139,13 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(15.0),
               child: AsyncButtonBuilder(
                 onPressed: () async {
+                  UserCredential credential;
                   try {
-                    final credential = await FirebaseAuth.instance
+                    credential = await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
                             email: user.text, password: pass.text);
+                    currentUid = credential.user!.uid;
+                    print("${currentUid}  CurrentUid");
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       feedback('user not found');
@@ -150,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                       feedback('wrong password');
                     }
                   }
-                  currentUid = FirebaseAuth.instance.currentUser!.uid;
+
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => MissingList()),

@@ -23,7 +23,7 @@ class CreateUser with ChangeNotifier {
         'name': name,
         'phone': mobile
       };
-      db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set(m);
+      await db.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set(m);
       currentUid = FirebaseAuth.instance.currentUser!.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
