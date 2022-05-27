@@ -17,6 +17,7 @@ class GetImage {
     if (gallery) {
       // ignore: deprecated_member_use
       pickedFile = (await picker.pickImage(
+        imageQuality: 60,
         source: ImageSource.gallery,
       ));
     }
