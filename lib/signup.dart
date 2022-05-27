@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:missing/custom%20widgets/textfield.dart';
 import 'package:missing/globals.dart';
+import 'package:missing/providers/create_user.dart';
 import 'package:missing/screens/missing_people_list.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -16,7 +18,8 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final user = TextEditingController();
-
+  final name = TextEditingController();
+  final phone = TextEditingController();
   final pass = TextEditingController();
   String error = "";
   final cpass = TextEditingController();
@@ -99,6 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   maxline: 1,
                   width: double.infinity,
                   icon: Icons.email,
+                  hasIcon: true,
                 ),
                 SizedBox(
                   height: 20,
@@ -109,6 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   maxline: 1,
                   width: double.infinity,
                   icon: Icons.password,
+                  hasIcon: true,
                 ),
                 SizedBox(
                   height: 20,
@@ -119,6 +124,29 @@ class _SignUpPageState extends State<SignUpPage> {
                   maxline: 1,
                   width: double.infinity,
                   icon: Icons.password,
+                  hasIcon: true,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomTextField(
+                  label: "Name",
+                  input: name,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.person,
+                  hasIcon: true,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomTextField(
+                  label: "Mobile",
+                  input: phone,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.phone,
+                  hasIcon: true,
                 )
               ]),
           SizedBox(
@@ -145,35 +173,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: const EdgeInsets.all(15.0),
                 child: AsyncButtonBuilder(
                   onPressed: () async {
-                    try {
-                      Navigator.pushAndRemoveUntil(
+                    
+                      
+                      await context.read<CreateUser>().createUser(
+                          user.text, pass.text, name.text, phone.text);
+                          Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => MissingList()),
                         (Route<dynamic> route) => false,
                       );
-                      final credential = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: user.text,
-                        password: pass.text,
-                      );
-                      Map<String, dynamic> m = {
-                        'email': user.text,
-                        'pass': pass.text
-                      };
-                      db
-                          .collection('users')
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .set(m);
-                      currentUid = FirebaseAuth.instance.currentUser!.uid;
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        feedback('The password provided is too weak.');
-                      } else if (e.code == 'email-already-in-use') {
-                        feedback('The account already exists for that email.');
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
+                  
                   },
                   child: Text(
                     'Sign Up',

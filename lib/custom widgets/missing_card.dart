@@ -47,6 +47,7 @@ class MissingCard extends StatelessWidget {
                         Container(
                           width: 300,
                           child: ListTile(
+                            leading: Icon(Icons.account_box),
                             title: Text(
                               name,
                               style: TextStyle(
@@ -58,6 +59,7 @@ class MissingCard extends StatelessWidget {
                         Container(
                           width: 300,
                           child: ListTile(
+                            leading: Icon(Icons.timeline),
                             title: Text(
                               age,
                               style: TextStyle(
@@ -69,6 +71,7 @@ class MissingCard extends StatelessWidget {
                         Container(
                           width: 300,
                           child: ListTile(
+                            leading: Icon(Icons.boy),
                             title: Text(lastwear,
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w500)),
@@ -78,6 +81,7 @@ class MissingCard extends StatelessWidget {
                         Container(
                           width: 300,
                           child: ListTile(
+                            leading: Icon(Icons.location_on),
                             title: Text(lastloc,
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w500)),
@@ -88,9 +92,10 @@ class MissingCard extends StatelessWidget {
                             ? (Container(
                                 width: 300,
                                 child: ListTile(
-                                  title: Text("missing",
+                                  title: Text("MISSING",
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 15,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.orange)),
                                 ),
@@ -98,9 +103,10 @@ class MissingCard extends StatelessWidget {
                             : (Container(
                                 width: 300,
                                 child: ListTile(
-                                  title: Text("found",
+                                  title: Text("FOUND",
+                                      textAlign: TextAlign.end,
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 15,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.green)),
                                 ),

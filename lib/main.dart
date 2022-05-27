@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:missing/loginpage.dart';
+import 'package:missing/providers/create_user.dart';
 import 'package:missing/providers/missing_people.dart';
 import 'package:missing/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,6 +16,9 @@ void main() async {
     providers: [
       Provider<MissingPeople>(
         create: (_) => MissingPeople(),
+      ),
+      Provider<CreateUser>(
+        create: (_) => CreateUser(),
       ),
     ],
     child: MaterialApp(
