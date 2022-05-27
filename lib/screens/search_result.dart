@@ -46,54 +46,71 @@ class _SearchResultState extends State<SearchResult> {
     return Scaffold(
       appBar: AppBar(),
       body: FutureBuilder(
-        future: Future.wait([
-          findTraits(),
-          context.read<UserDetails>().getUser(matched_person['user'])
-        ]),
-        builder: (ct, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+        future: findTraits(),
+        builder: (ct, AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.data!.isEmpty == false) {
-              matched_person = snapshot.data![0];
+              matched_person = snapshot.data!;
               return Column(children: [
                 Container(
                     width: double.infinity,
                     child: MissingCard(
-                        name: snapshot.data![0]['name'],
-                        age: snapshot.data![0]['age'],
-                        image: snapshot.data![0]['image'],
-                        lastwear: snapshot.data![0]['lastwear'],
-                        feet: snapshot.data![0]['feet'],
-                        inches: snapshot.data![0]['inches'],
+                        name: snapshot.data!['name'],
+                        age: snapshot.data!['age'],
+                        image: snapshot.data!['image'],
+                        lastwear: snapshot.data!['lastwear'],
+                        feet: snapshot.data!['feet'],
+                        inches: snapshot.data!['inches'],
                         missing: false,
-                        lastloc: snapshot.data![0]['lastloc'])),
-                Container(
-                  width: double.infinity,
-                  child: Card(
-                    elevation: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(children: [
-                        Text(
-                            "This Person was reported missing by ${snapshot.data![1]['name']}"),
-                        Text("Please Contact him/her on this number / email "),
-                        Text(
-                          "${snapshot.data![1]['phone']}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 20),
-                        ),
-                        Text("Or"),
-                        Text(
-                          "${snapshot.data![1]['email']}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 20),
-                        )
-                      ]),
-                    ),
-                  ),
-                )
+                        lastloc: snapshot.data!['lastloc'])),
+                FutureBuilder(
+                    future: context
+                        .read<UserDetails>()
+                        .getUser(matched_person['user']),
+                    builder:
+                        ((ctt, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        return Container(
+                          width: double.infinity,
+                          child: Card(
+                            elevation: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(children: [
+                                Text(
+                                    "This Person was reported missing by ${snapshot.data!['name']}"),
+                                Text(
+                                    "Please Contact him/her on this number / email "),
+                                Text(
+                                  "${snapshot.data!['phone']}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20),
+                                ),
+                                Text("Or"),
+                                Text(
+                                  "${snapshot.data!['email']}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20),
+                                )
+                              ]),
+                            ),
+                          ),
+                        );
+                      } else
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                    }))
               ]);
             } else
-              return Text('face not found');
+              return Center(
+                child: Text(
+                  'FACE NOT FOUND IN DATABASE',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                ),
+              );
           } else
             return Center(child: CircularProgressIndicator());
         },
