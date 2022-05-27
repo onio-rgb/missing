@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:missing/custom%20widgets/missing_card.dart';
 import 'package:missing/providers/missing_people.dart';
 import 'package:missing/screens/find_missing.dart';
 import 'package:missing/screens/report_missing.dart';
@@ -22,75 +23,68 @@ class _MissingListState extends State<MissingList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        floatingActionButton: FloatingActionButton(
-            isExtended: true,
-            child: Icon(
-              Icons.search,
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: ((context) => FindMissing())));
-            }),
-        appBar: AppBar(
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ReportMissing())).then((value) {
-                  setState(() {});
-                });
-              },
-              child: Icon(
-                Icons.add,
-              ),
-            ),
-            DropdownButton<String>(
-              borderRadius: BorderRadius.circular(10),
-              dropdownColor: FlexColor.greyLawLightPrimary,
-              value: dropdownValue,
-              icon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Icon(Icons.filter_list)),
-              elevation: 16,
-              style: const TextStyle(color: Colors.white),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownValue = newValue!;
-                });
-              },
-              items: <String>['For Me', 'All']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            )
-          ],
-        ),
-        body: FutureBuilder(
-          future: ((dropdownValue == 'For Me')
-              ? (context.read<MissingPeople>().getPerUser())
-              : (context.read<MissingPeople>().getAll())),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              List<Map<String, dynamic>> missing_people =
-                  context.watch<MissingPeople>().missing;
-              return ListView.builder(
-                  itemCount: missing_people.length,
-                  itemBuilder: (context, int i) {
-                    return Text(
-                        "${missing_people[i]['name']}  ${missing_people[i]['age']}");
+    return SafeArea(
+      child: Scaffold(
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: "h3",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReportMissing())).then((value) {
+                    setState(() {});
                   });
-            } else
-              return Center(
-                  child: CircularProgressIndicator(
-                color: Colors.black,
-              ));
-          },
-        ));
+                },
+                child: Icon(
+                  Icons.add,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              FloatingActionButton(
+                  heroTag: "h4",
+                  isExtended: true,
+                  child: Icon(
+                    Icons.search,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => FindMissing())));
+                  }),
+            ],
+          ),
+          body: FutureBuilder(
+            future: ((dropdownValue == 'For Me')
+                ? (context.read<MissingPeople>().getPerUser())
+                : (context.read<MissingPeople>().getAll())),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                List<Map<String, dynamic>> missing_people =
+                    context.watch<MissingPeople>().missing;
+                return ListView.builder(
+                    itemCount: missing_people.length,
+                    itemBuilder: (context, int i) {
+                      return MissingCard(
+                          name: missing_people[i]['name'],
+                          age: missing_people[i]['age'],
+                          image: missing_people[i]['image'],
+                          lastwear: missing_people[i]['lastwear'],
+                          feet: missing_people[i]['feet'],
+                          inches: missing_people[i]['inches']);
+                    });
+              } else
+                return Center(
+                    child: CircularProgressIndicator(
+                  color: Colors.black,
+                ));
+            },
+          )),
+    );
   }
 }

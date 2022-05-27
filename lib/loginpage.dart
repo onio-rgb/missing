@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:missing/custom%20widgets/textfield.dart';
 import 'package:missing/globals.dart';
 import 'package:missing/providers/startup.dart';
 import 'package:missing/screens/missing_people_list.dart';
@@ -95,80 +96,25 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Card(
-                    //shadowColor: Colors.grey,
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: user,
-                        style: TextStyle(fontSize: 20),
-                        //cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.login,
-                            ),
-                            labelText: 'Username',
-                            labelStyle: TextStyle(fontSize: 15),
-                            floatingLabelStyle: TextStyle(fontSize: 15),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            //focusColor: Colors.white,
-                            //hoverColor: Colors.white,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
-                                    width: 0, style: BorderStyle.none)),
-                            filled: true,
-                            //fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0)),
-                      ),
-                    ),
-                  ),
+                CustomTextField(
+                  label: "Email",
+                  input: user,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.email,
+                  hasIcon: true,
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Card(
-                    //shadowColor: Colors.grey,
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: pass,
-                        style: TextStyle(fontSize: 20),
-                        //cursorColor: Colors.black,
-                        decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.password,
-                              //color: Colors.black,
-                            ),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(fontSize: 15),
-                            floatingLabelStyle: TextStyle(fontSize: 15),
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            //focusColor: Colors.white,
-                            //hoverColor: Colors.white,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                borderSide: BorderSide(
-                                    width: 0, style: BorderStyle.none)),
-                            filled: true,
-                            //fillColor: Colors.white,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0)),
-                      ),
-                    ),
-                  ),
-                )
+                CustomTextField(
+                  label: "Password",
+                  input: pass,
+                  maxline: 1,
+                  width: double.infinity,
+                  icon: Icons.password_rounded,
+                  hasIcon: true,
+                ),
               ]),
           SizedBox(
             height: 30,
@@ -197,7 +143,6 @@ class _LoginPageState extends State<LoginPage> {
                     final credential = await FirebaseAuth.instance
                         .signInWithEmailAndPassword(
                             email: user.text, password: pass.text);
-                    
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       feedback('user not found');
@@ -206,11 +151,11 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   }
                   currentUid = FirebaseAuth.instance.currentUser!.uid;
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => MissingList()),
-                      (Route<dynamic> route) => false,
-                    );
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => MissingList()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
                 child: Text(
                   'Login',
