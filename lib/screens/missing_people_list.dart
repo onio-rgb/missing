@@ -55,7 +55,11 @@ class _MissingListState extends State<MissingList> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => FindMissing())));
+                            builder: ((context) => FindMissing()))).then((value) {
+                              setState(() {
+                                
+                              });
+                            });
                   }),
             ],
           ),

@@ -44,11 +44,21 @@ class MissingPeople with ChangeNotifier {
     final missing_people_ref = await db.collection('missing people').get();
     final missing_people = missing_people_ref.docs;
     for (var missing_peep in missing_people) {
-      _tensorDb.add(missing_peep.data());
+      final temp = missing_peep.data();
+      temp.update(
+        'doc_ref',
+        (value) => missing_peep.id,
+        ifAbsent: () => missing_peep.id,
+      );
+      _tensorDb.add(temp);
     }
   }
 
   Future<void> refreshLocalDb() async {
     await getTensorAll();
+  }
+
+  Future<void> foundMissing(String doc_ref) async {
+    await db.collection('missing people').doc(doc_ref).update({'missing' : false});
   }
 }
