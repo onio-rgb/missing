@@ -50,6 +50,8 @@ dependencies:
   image: ^3.2.0
   font_awesome_flutter: '>= 4.7.0'
   material_design_icons_flutter: ^5.0.6595
+  circular_profile_avatar: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

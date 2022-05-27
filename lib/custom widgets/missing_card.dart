@@ -8,6 +8,8 @@ class MissingCard extends StatelessWidget {
   final String lastwear;
   final int feet;
   final int inches;
+  final bool missing;
+  final String lastloc;
   const MissingCard(
       {Key? key,
       required this.name,
@@ -15,13 +17,15 @@ class MissingCard extends StatelessWidget {
       required this.image,
       required this.lastwear,
       required this.feet,
-      required this.inches})
+      required this.inches,
+      required this.missing,
+      required this.lastloc})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 400,
       width: double.infinity,
       child: Card(
           elevation: 3,
@@ -36,8 +40,8 @@ class MissingCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    height: 300,
-                    width: 300,
+                    height: 400,
+                    width: 250,
                     child: Column(
                       children: [
                         Container(
@@ -70,7 +74,37 @@ class MissingCard extends StatelessWidget {
                                     fontSize: 20, fontWeight: FontWeight.w500)),
                             subtitle: Text("Last Wearing"),
                           ),
-                        )
+                        ),
+                        Container(
+                          width: 300,
+                          child: ListTile(
+                            title: Text(lastloc,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500)),
+                            subtitle: Text("Last Seen location"),
+                          ),
+                        ),
+                        ((missing == true)
+                            ? (Container(
+                                width: 300,
+                                child: ListTile(
+                                  title: Text("missing",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.orange)),
+                                ),
+                              ))
+                            : (Container(
+                                width: 300,
+                                child: ListTile(
+                                  title: Text("found",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.green)),
+                                ),
+                              )))
                       ],
                     ),
                   ),
@@ -80,13 +114,15 @@ class MissingCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                          flex: 2,
+                          flex: 1,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              foregroundImage: NetworkImage(image),
-                              minRadius: 10,
-                              maxRadius: 100,
+                            child: Container(
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(image),
+                                radius: 100,
+                                backgroundColor: Colors.transparent,
+                              ),
                             ),
                           )),
                       Expanded(

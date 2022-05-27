@@ -28,6 +28,7 @@ class CustomTextField extends StatelessWidget {
         child: TextField(
           maxLines: maxline,
           controller: input,
+
           style: TextStyle(fontSize: 20),
           //cursorColor: Colors.black,
           decoration: InputDecoration(

@@ -98,6 +98,7 @@ class _ReportMissingState extends State<ReportMissing> {
   late TextEditingController lastwear = TextEditingController();
   late TextEditingController feet = TextEditingController();
   late TextEditingController inches = TextEditingController();
+  late TextEditingController lastloc = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,6 +174,13 @@ class _ReportMissingState extends State<ReportMissing> {
       appBar: AppBar(),
       body: ListView(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Text(
+              "Name of the person",
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
+          ),
           CustomTextField(
             label: 'Name',
             input: name,
@@ -180,6 +188,13 @@ class _ReportMissingState extends State<ReportMissing> {
             width: double.infinity,
             icon: Icons.password,
             hasIcon: false,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Text(
+              "Age of the person",
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
           ),
           CustomTextField(
             label: 'Age',
@@ -189,6 +204,13 @@ class _ReportMissingState extends State<ReportMissing> {
             icon: Icons.password,
             hasIcon: false,
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Text(
+              "What clothes was he/she wearing last time",
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
+          ),
           CustomTextField(
             label: 'Last seen clothes',
             input: lastwear,
@@ -196,6 +218,13 @@ class _ReportMissingState extends State<ReportMissing> {
             width: double.infinity,
             icon: Icons.password,
             hasIcon: false,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Text(
+              "Height",
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
           ),
           Row(
             children: [
@@ -217,31 +246,49 @@ class _ReportMissingState extends State<ReportMissing> {
               ),
             ],
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Text(
+              "Last seen location of the missing person",
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
+          ),
+          CustomTextField(
+            label: 'Last Location',
+            input: lastloc,
+            maxline: 3,
+            width: double.infinity,
+            icon: Icons.password,
+            hasIcon: false,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+            child: (_image != null)
+                ? Container(
+                    width: 300,
+                    height: 400,
+                    child: Image.file(
+                      _image!,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  )
+                : Container(),
+          ),
           (_noface == true)
               ? Text(
                   "No Face Detected! Try again",
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.redAccent),
                 )
               : Container(),
           (_multiplefaces == true)
               ? Text(
-                  "More than once face detected",
+                  "More than once face detected! Try again",
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.redAccent),
                 )
               : Container(),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-            child: Container(
-                width: 300,
-                height: 400,
-                child: (_image != null)
-                    ? Image.file(
-                        _image!,
-                        width: double.infinity,
-                        height: double.infinity,
-                      )
-                    : Container()),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -249,20 +296,26 @@ class _ReportMissingState extends State<ReportMissing> {
                 padding: const EdgeInsets.all(15.0),
                 child: AsyncButtonBuilder(
                   onPressed: () async {
-                    final details = {
-                      'user': currentUid,
-                      'name': name.text,
-                      'age': age.text,
-                      'lastwear': lastwear.text,
-                      'feet': int.parse(feet.text),
-                      'inches': int.parse(inches.text)
-                    };
-                    DocumentReference doc_ref =
-                        await db.collection('missing people').add(details);
-                    // print("bery");
-                    await saveImages(doc_ref);
-                    await uploadTensor(doc_ref);
-                    Navigator.pop(context);
+                    if (_noface == false && _multiplefaces == false) {
+                      final details = {
+                        'user': currentUid,
+                        'name': name.text,
+                        'age': age.text,
+                        'lastwear': lastwear.text,
+                        'feet': int.parse(feet.text),
+                        'inches': int.parse(inches.text),
+                        'missing': true,
+                        'lastloc': lastloc.text,
+                      };
+                      DocumentReference doc_ref =
+                          await db.collection('missing people').add(details);
+                      // print("bery");
+                      await saveImages(doc_ref);
+                      await uploadTensor(doc_ref);
+                      Navigator.pop(context);
+                    } else {
+                      setState(() {});
+                    }
                   },
                   child: Text(
                     'Submit',

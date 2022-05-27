@@ -71,12 +71,15 @@ class _MissingListState extends State<MissingList> {
                     itemCount: missing_people.length,
                     itemBuilder: (context, int i) {
                       return MissingCard(
-                          name: missing_people[i]['name'],
-                          age: missing_people[i]['age'],
-                          image: missing_people[i]['image'],
-                          lastwear: missing_people[i]['lastwear'],
-                          feet: missing_people[i]['feet'],
-                          inches: missing_people[i]['inches']);
+                        name: missing_people[i]['name'],
+                        age: missing_people[i]['age'],
+                        image: missing_people[i]['image'],
+                        lastwear: missing_people[i]['lastwear'],
+                        feet: missing_people[i]['feet'],
+                        inches: missing_people[i]['inches'],
+                        missing: missing_people[i]['missing'],
+                        lastloc: missing_people[i]['lastloc'],
+                      );
                     });
               } else
                 return Center(
