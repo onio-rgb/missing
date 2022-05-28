@@ -59,6 +59,9 @@ class MissingPeople with ChangeNotifier {
   }
 
   Future<void> foundMissing(String doc_ref) async {
-    await db.collection('missing people').doc(doc_ref).update({'missing' : false});
+    await db
+        .collection('missing people')
+        .doc(doc_ref)
+        .update({'missing': false});
   }
 }

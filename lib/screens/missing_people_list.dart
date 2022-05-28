@@ -5,6 +5,7 @@ import 'package:missing/custom%20widgets/missing_card.dart';
 import 'package:missing/providers/missing_people.dart';
 import 'package:missing/screens/find_missing.dart';
 import 'package:missing/screens/report_missing.dart';
+import 'package:missing/screens/user_account_dialog.dart';
 import 'package:provider/provider.dart';
 
 class MissingList extends StatefulWidget {
@@ -25,6 +26,15 @@ class _MissingListState extends State<MissingList> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).restorablePush(_dialogBuilder);
+                  },
+                  icon: Icon(Icons.person))
+            ],
+          ),
           floatingActionButton: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -53,13 +63,12 @@ class _MissingListState extends State<MissingList> {
                   ),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => FindMissing()))).then((value) {
-                              setState(() {
-                                
-                              });
-                            });
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => FindMissing())))
+                        .then((value) {
+                      setState(() {});
+                    });
                   }),
             ],
           ),
@@ -92,6 +101,14 @@ class _MissingListState extends State<MissingList> {
                 ));
             },
           )),
+    );
+  }
+
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => UserAccount(),
     );
   }
 }

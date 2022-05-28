@@ -15,8 +15,8 @@ class FaceAuthentication {
     for (var tensor in tensorAll) {
       if (tensor['tensor'] != null) {
         double distance = euclideanDistance(tensor['tensor'], inputTensor);
-
-        if (minDistance > distance && distance <= 0.7) {
+        // print("${distance} distance");
+        if (minDistance > distance && distance <= 1) {
           minDistance = distance;
           matching_person = tensor;
         }

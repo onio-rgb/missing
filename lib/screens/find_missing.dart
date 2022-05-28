@@ -10,6 +10,7 @@ import 'package:missing/services/facerecognition.dart';
 import 'package:missing/services/get_image.dart';
 import 'package:missing/services/image_processing.dart';
 import 'package:missing/services/mobilenet.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class FindMissing extends StatefulWidget {
   const FindMissing({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class FindMissing extends StatefulWidget {
 }
 
 class _FindMissingState extends State<FindMissing> {
+  bool _isLoaderVisible = false;
   File? _image;
   List<Face> _faces = [];
   bool _noface = false;
@@ -132,7 +134,12 @@ class _FindMissingState extends State<FindMissing> {
               onPressed: () async {
                 _image = await getImage.getImage(true);
                 if (_image != null) {
+                  context.loaderOverlay.show(widget: FindMissing());
+
                   _faces = await faceRecognition.detectFaces(_image!);
+
+                  context.loaderOverlay.hide();
+
                   if (_faces.length == 0) {
                     setState(() {
                       _noface = true;
