@@ -2,8 +2,10 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:missing/custom%20widgets/missing_card.dart';
+import 'package:missing/globals.dart';
 import 'package:missing/providers/missing_people.dart';
 import 'package:missing/screens/find_missing.dart';
+import 'package:missing/screens/person_found_alert.dart';
 import 'package:missing/screens/report_missing.dart';
 import 'package:missing/screens/user_account_dialog.dart';
 import 'package:provider/provider.dart';
@@ -20,19 +22,43 @@ class MissingList extends StatefulWidget {
 class _MissingListState extends State<MissingList> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   String dropdownValue = "For Me";
-  final missing = MissingPeople().addListener(() {});
+
+  List<Map<String, dynamic>> missing_people = [];
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(seconds: 3));
+      print("${missing_people} alerdialogpls");
+
+      for (var missing_peep in missing_people) {
+        if (missing_peep['user'] == currentUid &&
+            missing_peep['found_by'] != "" &&
+            missing_peep['missing'] == true) {
+          // print("alerdialogpls");
+          Navigator.of(context)
+              .restorablePush(_alertDialogBuilder, arguments: missing_peep);
+        }
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
+            
+            elevation: 10,
             actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).restorablePush(_dialogBuilder);
-                  },
-                  icon: Icon(Icons.person))
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).restorablePush(_dialogBuilder);
+                    },
+                    icon: Icon(Icons.person_outline_rounded)),
+              )
             ],
           ),
           floatingActionButton: Column(
@@ -78,8 +104,8 @@ class _MissingListState extends State<MissingList> {
                 : (context.read<MissingPeople>().getAll())),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                List<Map<String, dynamic>> missing_people =
-                    context.watch<MissingPeople>().missing;
+                missing_people = context.watch<MissingPeople>().missing;
+
                 return ListView.builder(
                     itemCount: missing_people.length,
                     itemBuilder: (context, int i) {
@@ -109,6 +135,16 @@ class _MissingListState extends State<MissingList> {
     return DialogRoute<void>(
       context: context,
       builder: (BuildContext context) => UserAccount(),
+    );
+  }
+
+  static Route<Object?> _alertDialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) => PersonFoundAlert(
+        found_person: arguments as Map<String, dynamic>,
+      ),
     );
   }
 }

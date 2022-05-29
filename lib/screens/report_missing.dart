@@ -306,10 +306,16 @@ class _ReportMissingState extends State<ReportMissing> {
                         'inches': int.parse(inches.text),
                         'missing': true,
                         'lastloc': lastloc.text,
+                        'found_by': "",
+                        'doc_ref': ""
                       };
                       DocumentReference doc_ref =
                           await db.collection('missing people').add(details);
                       // print("bery");
+                      await db
+                          .collection('missing people')
+                          .doc(doc_ref.id)
+                          .update({'doc_ref': doc_ref.id});
                       await saveImages(doc_ref);
                       await uploadTensor(doc_ref);
                       Navigator.pop(context);

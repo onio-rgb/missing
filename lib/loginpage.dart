@@ -31,20 +31,22 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      // backgroundColor: Colors.grey[200],
-      body: ListView(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
+    return SafeArea(
+      child: Scaffold(
+        // backgroundColor: Colors.grey[200],
+        body: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  height: 150,
+                ),
+                Container(
+                  width: 150,
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextButton(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton(
                       onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -62,16 +64,11 @@ class _LoginPageState extends State<LoginPage> {
                       //color: Colors.black
                       ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
+                Container(
+                  width: 150,
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextButton(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton(
                       onPressed: () {},
                       child: Text('SignIn',
                           style: TextStyle(
@@ -86,92 +83,114 @@ class _LoginPageState extends State<LoginPage> {
                       //color: Colors.black
                       ),
                 ),
+              ],
+            ),
+            SizedBox(
+              height: 170,
+              width: double.infinity,
+              child: Image.asset(
+                "assets/logo.png",
+                color: Theme.of(context).colorScheme.primaryContainer,
               ),
-            ],
-          ),
-          SizedBox(
-            height: 100,
-          ),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomTextField(
-                  label: "Email",
-                  input: user,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.email,
-                  hasIcon: true,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomTextField(
-                  label: "Password",
-                  input: pass,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.password_rounded,
-                  hasIcon: true,
-                ),
-              ]),
-          SizedBox(
-            height: 30,
-          ),
-          Center(
-            child: Container(
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
               child: Text(
-                error,
-                style: TextStyle(color: Colors.red),
+                "Make World Smaller",
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700),
               ),
-              width: 300,
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomTextField(
+                    label: "Email",
+                    input: user,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.email,
+                    hasIcon: true,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    label: "Password",
+                    input: pass,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.password_rounded,
+                    hasIcon: true,
+                  ),
+                ]),
+            SizedBox(
               height: 30,
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            width: 50,
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: AsyncButtonBuilder(
-                onPressed: () async {
-                  UserCredential credential;
-                  try {
-                    credential = await FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: user.text, password: pass.text);
-                    currentUid = credential.user!.uid;
-                    print("${currentUid}  CurrentUid");
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                      feedback('user not found');
-                    } else if (e.code == 'wrong-password') {
-                      feedback('wrong password');
-                    }
-                  }
-
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => MissingList()),
-                    (Route<dynamic> route) => false,
-                  );
-                },
+            Center(
+              child: Container(
                 child: Text(
-                  'Login',
-                  style: TextStyle(fontSize: 17),
+                  error,
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
                 ),
-                builder: (context, child, callback, _) {
-                  return ElevatedButton(onPressed: callback, child: child);
-                },
+                width: 300,
+                height: 30,
               ),
             ),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-          ),
-        ],
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: 50,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: AsyncButtonBuilder(
+                  onPressed: () async {
+                    UserCredential credential;
+                    try {
+                      credential = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: user.text, password: pass.text);
+                      currentUid = credential.user!.uid;
+                      print("${currentUid}  CurrentUid");
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                        feedback('user not found');
+                      } else if (e.code == 'wrong-password') {
+                        feedback('wrong password');
+                      }
+                    }
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MissingList()),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                  child: Text(
+                    'Login',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  builder: (context, child, callback, _) {
+                    return ElevatedButton(onPressed: callback, child: child);
+                  },
+                ),
+              ),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(30)),
+            ),
+          ],
+        ),
       ),
     );
   }

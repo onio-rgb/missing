@@ -33,29 +33,15 @@ void main() async {
       ],
       child: MaterialApp(
         theme: FlexThemeData.light(
-          scheme: FlexScheme.blueWhale,
-          surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-          blendLevel: 20,
-          appBarOpacity: 0.95,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 20,
-            blendOnColors: false,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          scheme: FlexScheme.green,
+
           useMaterial3: true,
           // To use the playground font, add GoogleFonts package and uncomment
           // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
         darkTheme: FlexThemeData.dark(
-          scheme: FlexScheme.blueWhale,
-          surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-          blendLevel: 15,
-          appBarStyle: FlexAppBarStyle.background,
-          appBarOpacity: 0.90,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 30,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          scheme: FlexScheme.green,
+
           useMaterial3: true,
           // To use the playground font, add GoogleFonts package and uncomment
           // fontFamily: GoogleFonts.notoSans().fontFamily,

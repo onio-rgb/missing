@@ -33,19 +33,22 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.grey[200],
-      body: ListView(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
+    return SafeArea(
+      child: Scaffold(
+        // backgroundColor: Colors.grey[200],
+        body: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SizedBox(
+                  height: 150,
+                ),
+                Container(
+                  width: 150,
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextButton(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton(
                       onPressed: () {},
                       child: Text('SignUp',
                           style: TextStyle(
@@ -60,16 +63,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       //color: Colors.black
                       ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
+                Container(
+                  width: 150,
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TextButton(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -86,118 +84,115 @@ class _SignUpPageState extends State<SignUpPage> {
                       //color: Colors.black
                       ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomTextField(
-                  label: "Email",
-                  input: user,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.email,
-                  hasIcon: true,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomTextField(
-                  label: "Password",
-                  input: pass,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.password,
-                  hasIcon: true,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomTextField(
-                  label: "Confirm Password",
-                  input: cpass,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.password,
-                  hasIcon: true,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomTextField(
-                  label: "Name",
-                  input: name,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.person,
-                  hasIcon: true,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                CustomTextField(
-                  label: "Mobile",
-                  input: phone,
-                  maxline: 1,
-                  width: double.infinity,
-                  icon: Icons.phone,
-                  hasIcon: true,
-                )
-              ]),
-          SizedBox(
-            height: 30,
-          ),
-          Center(
-            child: Container(
-              child: Text(
-                error,
-                style: TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
-              ),
-              width: 300,
+              ],
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomTextField(
+                    label: "Email",
+                    input: user,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.email,
+                    hasIcon: true,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    label: "Password",
+                    input: pass,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.password,
+                    hasIcon: true,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    label: "Confirm Password",
+                    input: cpass,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.password,
+                    hasIcon: true,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    label: "Name",
+                    input: name,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.person,
+                    hasIcon: true,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    label: "Mobile",
+                    input: phone,
+                    maxline: 1,
+                    width: double.infinity,
+                    icon: Icons.phone,
+                    hasIcon: true,
+                  )
+                ]),
+            SizedBox(
               height: 30,
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: AsyncButtonBuilder(
-                  onPressed: () async {
-                    
-                      
+            Center(
+              child: Container(
+                child: Text(
+                  error,
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+                width: 300,
+                height: 30,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: AsyncButtonBuilder(
+                    onPressed: () async {
                       await context.read<CreateUser>().createUser(
                           user.text, pass.text, name.text, phone.text);
-                          Navigator.pushAndRemoveUntil(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => MissingList()),
                         (Route<dynamic> route) => false,
                       );
-                  
-                  },
-                  child: Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 17),
+                    },
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    builder: (context, child, callback, _) {
+                      return ElevatedButton(onPressed: callback, child: child);
+                    },
                   ),
-                  builder: (context, child, callback, _) {
-                    return ElevatedButton(onPressed: callback, child: child);
-                  },
                 ),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(30)),
               ),
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(30)),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

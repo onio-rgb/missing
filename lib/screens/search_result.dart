@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:missing/custom%20widgets/missing_card.dart';
+import 'package:missing/globals.dart';
 import 'package:missing/providers/missing_people.dart';
 import 'package:missing/providers/user_details.dart';
 import 'package:missing/services/face_auth.dart';
@@ -29,7 +30,7 @@ class _SearchResultState extends State<SearchResult> {
   List _mobilenet_res = [];
   MobileNet mobileNet = new MobileNet();
 
-  Future<Map<String, dynamic>> findTraits() async {
+  Future<Map<String, dynamic>> findTraits(BuildContext context) async {
     for (var face in widget.faces) {
       _mobilenet_res = (await mobileNet.predict(widget.image, face));
     }
@@ -37,7 +38,7 @@ class _SearchResultState extends State<SearchResult> {
     Map<String, dynamic> matching_person =
         await faceAuthentication.compare(_mobilenet_res, context);
     if (matching_person.isEmpty == false) {
-      
+      context.read<MissingPeople>().foundBy(matching_person['doc_ref']);
     }
     return matching_person;
   }
@@ -54,12 +55,14 @@ class _SearchResultState extends State<SearchResult> {
             child: Container(
                 width: double.infinity,
                 height: 400,
-                child: Image.file(
-                  widget.image,
+                child: Card(
+                  child: Image.file(
+                    widget.image,
+                  ),
                 )),
           ),
           FutureBuilder(
-            future: findTraits(),
+            future: findTraits(context),
             builder: (ct, AsyncSnapshot<Map<String, dynamic>> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.data!.isEmpty == false) {
@@ -114,8 +117,8 @@ class _SearchResultState extends State<SearchResult> {
                             );
                           } else
                             return Center(
-                              child: SpinKitCubeGrid(
-                                color: Colors.white,
+                              child: SpinKitCircle(
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             );
                         }))
@@ -130,8 +133,8 @@ class _SearchResultState extends State<SearchResult> {
                   );
               } else
                 return Center(
-                  child: SpinKitCubeGrid(
-                    color: Colors.white,
+                  child: SpinKitCircle(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 );
             },
