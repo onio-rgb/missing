@@ -6,6 +6,7 @@ import 'package:missing/loginpage.dart';
 import 'package:missing/providers/create_user.dart';
 import 'package:missing/providers/log_out.dart';
 import 'package:missing/providers/missing_people.dart';
+import 'package:missing/providers/switch_screen.dart';
 import 'package:missing/providers/user_details.dart';
 import 'package:missing/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +30,9 @@ void main() async {
         ),
         Provider<LogOut>(
           create: (_) => LogOut(),
+        ),
+        ChangeNotifierProvider<SwitchScreen>(
+          create: (_) => SwitchScreen(),
         ),
       ],
       child: MaterialApp(

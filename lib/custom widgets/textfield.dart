@@ -11,13 +11,15 @@ class CustomTextField extends StatelessWidget {
   int maxline;
   TextEditingController input;
   String label;
+  bool obscure = false;
   CustomTextField(
       {required this.label,
       required this.input,
       required this.maxline,
       required this.width,
       required this.icon,
-      this.hasIcon});
+      this.hasIcon,
+      required this.obscure});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class CustomTextField extends StatelessWidget {
       child: Container(
         width: width,
         child: TextField(
+          obscureText: obscure,
           maxLines: maxline,
           controller: input,
 

@@ -100,6 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     icon: Icons.email,
                     hasIcon: true,
+                    obscure: false,
                   ),
                   SizedBox(
                     height: 20,
@@ -111,6 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     icon: Icons.password,
                     hasIcon: true,
+                    obscure: true,
                   ),
                   SizedBox(
                     height: 20,
@@ -122,6 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     icon: Icons.password,
                     hasIcon: true,
+                    obscure: true,
                   ),
                   SizedBox(
                     height: 20,
@@ -133,6 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     icon: Icons.person,
                     hasIcon: true,
+                    obscure: false,
                   ),
                   SizedBox(
                     height: 20,
@@ -144,6 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: double.infinity,
                     icon: Icons.phone,
                     hasIcon: true,
+                    obscure: false,
                   )
                 ]),
             SizedBox(

@@ -120,6 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     icon: Icons.email,
                     hasIcon: true,
+                    obscure: false,
                   ),
                   SizedBox(
                     height: 20,
@@ -131,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     icon: Icons.password_rounded,
                     hasIcon: true,
+                    obscure: true,
                   ),
                 ]),
             SizedBox(

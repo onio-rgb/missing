@@ -1,6 +1,5 @@
 import 'dart:ffi';
 import 'dart:io';
-
 import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -188,6 +187,7 @@ class _ReportMissingState extends State<ReportMissing> {
             width: double.infinity,
             icon: Icons.password,
             hasIcon: false,
+            obscure: false,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -203,6 +203,7 @@ class _ReportMissingState extends State<ReportMissing> {
             width: double.infinity,
             icon: Icons.password,
             hasIcon: false,
+            obscure: false,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -218,6 +219,7 @@ class _ReportMissingState extends State<ReportMissing> {
             width: double.infinity,
             icon: Icons.password,
             hasIcon: false,
+            obscure: false,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -235,6 +237,7 @@ class _ReportMissingState extends State<ReportMissing> {
                 width: 150,
                 icon: Icons.password,
                 hasIcon: false,
+                obscure: false,
               ),
               CustomTextField(
                 label: 'Inches',
@@ -243,6 +246,7 @@ class _ReportMissingState extends State<ReportMissing> {
                 width: 150,
                 icon: Icons.password,
                 hasIcon: false,
+                obscure: false,
               ),
             ],
           ),
@@ -260,6 +264,7 @@ class _ReportMissingState extends State<ReportMissing> {
             width: double.infinity,
             icon: Icons.password,
             hasIcon: false,
+            obscure: false,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),

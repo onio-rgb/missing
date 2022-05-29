@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:missing/globals.dart';
 import 'package:missing/loginpage.dart';
 import 'package:missing/providers/log_out.dart';
+import 'package:missing/providers/switch_screen.dart';
 import 'package:missing/providers/user_details.dart';
 import 'package:provider/provider.dart';
 

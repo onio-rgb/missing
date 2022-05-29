@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:missing/custom%20widgets/missing_card.dart';
 import 'package:missing/globals.dart';
 import 'package:missing/providers/missing_people.dart';
+import 'package:missing/providers/switch_screen.dart';
+import 'package:missing/screens/drawer.dart';
 import 'package:missing/screens/find_missing.dart';
 import 'package:missing/screens/person_found_alert.dart';
 import 'package:missing/screens/report_missing.dart';
@@ -45,10 +47,15 @@ class _MissingListState extends State<MissingList> {
   }
 
   Widget build(BuildContext context) {
+    var switchProvider = Provider.of<SwitchScreen>(context, listen: true);
+    switchProvider.addListener(() {
+      setState(() {});
+    });
+
     return SafeArea(
       child: Scaffold(
+          drawer: DrawerMain(),
           appBar: AppBar(
-            
             elevation: 10,
             actions: [
               Padding(
@@ -99,7 +106,7 @@ class _MissingListState extends State<MissingList> {
             ],
           ),
           body: FutureBuilder(
-            future: ((dropdownValue == 'For Me')
+            future: ((switchProvider.state == "For Me")
                 ? (context.read<MissingPeople>().getPerUser())
                 : (context.read<MissingPeople>().getAll())),
             builder: (context, snapshot) {
@@ -129,6 +136,7 @@ class _MissingListState extends State<MissingList> {
           )),
     );
   }
+  
 
   static Route<Object?> _dialogBuilder(
       BuildContext context, Object? arguments) {
