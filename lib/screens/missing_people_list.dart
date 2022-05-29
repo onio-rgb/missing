@@ -49,7 +49,9 @@ class _MissingListState extends State<MissingList> {
   Widget build(BuildContext context) {
     var switchProvider = Provider.of<SwitchScreen>(context, listen: true);
     switchProvider.addListener(() {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
 
     return SafeArea(
@@ -136,7 +138,6 @@ class _MissingListState extends State<MissingList> {
           )),
     );
   }
-  
 
   static Route<Object?> _dialogBuilder(
       BuildContext context, Object? arguments) {
