@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Welcome to the Missing People Finder App! This project was developed as a part of Microsoft Engage program. The primary goal of this app is to leverage the power of Google ML Kit and MobileNet TF Lite Model to assist in locating missing individuals within communities. This app is designed to create a network of users who can collaboratively report missing persons and identify potential matches using the provided resources.
+Welcome to the Missing People Finder App! This project was developed as a part of Microsoft Engage program. The primary goal of this app is to leverage the power of Google ML Kit and MobileNet Model to assist in locating missing individuals within communities. This app is designed to create a network of users who can collaboratively report missing persons and identify potential matches using the provided resources.
 
 ## Screenshots
 
